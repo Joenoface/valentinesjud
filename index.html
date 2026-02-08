@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Judy Cynthia — My Valentine</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink: #ff5fa2;
+      --pink-2: #ff87bc;
+      --soft-pink: #ffe6f1;
+      --glass: rgba(255, 255, 255, 0.6);
+      --shadow: 0 25px 50px rgba(255, 95, 162, 0.25);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffd1e6, #fff);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* ===== FRAMER-LIKE REVEALS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+      transition: all 0.9s cubic-bezier(.22,.61,.36,1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .hero {
+      max-width: 1000px;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      padding: 70px 50px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    h1, h2 { font-family: 'Playfair Display', serif; }
+
+    h1 {
+      font-size: clamp(3rem, 6vw, 4.2rem);
+      color: var(--pink);
+      margin-bottom: 20px;
+    }
+
+    p { line-height: 1.9; }
+
+    section { padding: 90px 20px; display: flex; justify-content: center; }
+
+    .card {
+      max-width: 1150px;
+      width: 100%;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      padding: 60px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 { font-size: 2.4rem; color: var(--pink); margin-bottom: 30px; }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: 35px; }
+    .time-box {
+      background: rgba(255,255,255,0.75);
+      padding: 18px 22px;
+      border-radius: 16px;
+      min-width: 90px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    }
+    .time-box h3 { color: var(--pink); font-size: 1.6rem; }
+
+    /* ===== ABOUT ===== */
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: 45px; align-items: center; }
+    .about img { width: 100%; height: 420px; object-fit: cover; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
+    .image-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .image-row img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transition: transform 0.35s ease;
+    }
+
+    .image-row img:hover { transform: scale(1.05); }
+
+    /* ===== STORY ===== */
+    .story p { font-size: 1.05rem; margin-bottom: 16px; }
+
+    /* ===== FUTURE ===== */
+    .future { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
+    .tile {
+      background: rgba(255,255,255,0.75);
+      padding: 32px 26px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+      transition: transform 0.35s ease;
+    }
+    .tile:hover { transform: translateY(-8px) scale(1.02); }
+    .tile h3 { color: var(--pink); margin-bottom: 10px; }
+
+    /* ===== PROPOSAL ===== */
+    .proposal { text-align: center; }
+    .buttons { display: flex; justify-content: center; gap: 22px; margin-top: 30px; flex-wrap: wrap; }
+    button { padding: 18px 46px; border-radius: 40px; border: none; font-size: 1.05rem; cursor: pointer; }
+    .yes { background: linear-gradient(135deg, var(--pink), var(--pink-2)); color: white; box-shadow: 0 12px 30px rgba(255,95,162,0.45); }
+    .no { background: white; color: #777; }
+    .response { margin-top: 40px; font-size: 1.3rem; color: var(--pink); }
+
+    /* ===== MUSIC MODAL ===== */
+    .music-modal {
+      position: fixed; inset: 0; background: rgba(255,200,225,0.85);
+      display: flex; align-items: center; justify-content: center; z-index: 999;
+    }
+    .music-box { background: white; padding: 40px; border-radius: 24px; text-align: center; box-shadow: var(--shadow); }
+
+    footer { text-align: center; padding: 40px 20px 60px; color: #888; }
+
+    @media (max-width: 820px) {
+      .about { grid-template-columns: 1fr; }
+      .card { padding: 40px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MUSIC CONSENT -->
+<div class="music-modal" id="musicModal">
+  <div class="music-box">
+    <h3>May I play a soft love song? 🎶</h3>
+    <button class="yes" onclick="enableMusic()">Yes, play it 💖</button>
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="assets/love-song.mp3" type="audio/mpeg" />
+</audio>
+
+<header class="reveal">
+  <div class="hero">
+    <h1>Judy Cynthia ❤️</h1>
+    <p>A woman of vision, discipline, and a beautiful future.</p>
+
+    <div class="countdown">
+      <div class="time-box"><h3 id="days">0</h3><span>Days</span></div>
+      <div class="time-box"><h3 id="hours">0</h3><span>Hours</span></div>
+      <div class="time-box"><h3 id="minutes">0</h3><span>Minutes</span></div>
+      <div class="time-box"><h3 id="seconds">0</h3><span>Seconds</span></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="card about reveal">
+    <div>
+      <h2>About My Babe</h2>
+      <p><strong>Name:</strong> Judy Cynthia</p>
+      <p><strong>Profession:</strong> Teacher | Visionary</p>
+      <p>Focused on growth, wealth, and purpose.</p>
+
+      <div class="image-row">
+        <img src="images/judy-1.jpg" />
+        <img src="images/judy-2.jpg" />
+        <img src="images/judy-3.jpg" />
+      </div>
+    </div>
+    <img src="images/judy-main.jpg" />
+  </div>
+</section>
+
+<section>
+  <div class="card story reveal">
+    <h2>Our Story</h2>
+    <p>Two focused souls, aligned in purpose, choosing growth and intention.</p>
+
+    <div class="image-row">
+      <img src="images/us-1.jpg" />
+      <img src="images/us-2.jpg" />
+      <img src="images/us-3.jpg" />
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="card reveal">
+    <h2>Our Future</h2>
+    <div class="future">
+      <div class="tile">Growth & Support</div>
+      <div class="tile">Wealth Creation</div>
+      <div class="tile">Stability</div>
+      <div class="tile">Love</div>
+    </div>
+
+    <div class="image-row" style="margin-top:35px">
+      <img src="images/future-1.jpg" />
+      <img src="images/future-2.jpg" />
+      <img src="images/future-3.jpg" />
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="card proposal reveal">
+    <h2>Will You Be My Valentine? 💖</h2>
+    <div class="buttons">
+      <button class="yes" onclick="sayYes()">Yes 💕</button>
+      <button class="no" onmouseover="moveNo(this)">No 🙈</button>
+    </div>
+    <div class="response" id="response"></div>
+  </div>
+</section>
+
+<footer>Made with love • Valentine’s Edition</footer>
+
+<script>
+  function enableMusic(){ bgMusic.play(); musicModal.style.display='none'; }
+
+  function getNextValentine(){ const n=new Date(); let y=n.getFullYear(); const v=new Date(y,1,14); if(n>v)y++; return new Date(y,1,14); }
+  const target=getNextValentine();
+  setInterval(()=>{ const d=target-new Date(); days.textContent=Math.floor(d/86400000); hours.textContent=Math.floor(d/3600000)%24; minutes.textContent=Math.floor(d/60000)%60; seconds.textContent=Math.floor(d/1000)%60; },1000);
+
+  function sayYes(){ response.innerHTML='You just made my heart smile 💗'; }
+  function moveNo(b){ b.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`; }
+
+  const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('active')),{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
